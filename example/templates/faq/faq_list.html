@@ -15,7 +15,7 @@ Demo typical faq page. Created on: {{ created_on|date:"M d, Y" }}
 {% for question in object_list %}
 
 <li>
-<a href="#{{ question.answer_set.all.0.slug }}">{{ question.text }}</a>
+<a href="#{{ question.slug }}">{{ question.text }}</a>
 <br>
 <span class="answer">answer: {{ question.answer_set.all.0.text }}</span>
 </li>
@@ -29,7 +29,7 @@ Demo typical faq page. Created on: {{ created_on|date:"M d, Y" }}
 <ol style="margin-bottom: 1000px">
 {% for question in object_list %}
 <li>
-<a id="{{ question.answer_set.all.0.slug }}">
+<a id="{{ question.slug }}">
 <h3>{{ question.text }}</h3>
 {{ question.answer_set.all.0.text }}
 </li>
