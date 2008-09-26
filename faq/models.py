@@ -27,8 +27,12 @@ class Question(FaqBase):
     slug = models.SlugField( max_length=100, help_text="This is a unique identifier that allows your questions to display its detail view, ex 'how-can-i-contribute'", )
     text = models.TextField(_('question'), help_text='The actual question itself.')
     status = models.IntegerField( choices=enums.QUESTION_STATUS_CHOICES, default=enums.STATUS_INACTIVE, help_text="Only questions with their status set to 'Active' will be displayed. " )
+    order = models.IntegerField(_('order'), help_text='The order you would like the question to be displayed')
 
     objects = QuestionManager()
+    
+    class Meta:
+        ordering = ['order',]
 
     def __unicode__(self):
         return self.text
