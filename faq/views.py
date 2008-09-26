@@ -15,7 +15,6 @@ def dict_to_dict(origin, new):
             origin[key] = value()
         else:
             origin[key] = value
-    return origin
 
 def question_detail(request, slug, template_name='faq/question_detail.html', extra_context={}):
     """
@@ -45,9 +44,9 @@ def question_list( request, template_name='faq/question_list.html', extra_contex
     #we set the below dict value and then allow the user to pass along their own
     #if they we then populate the user supplied extra_context using the dict_to_dict method
     extra = { 'created_on': datetime.datetime.now() }
-    
+ 
     if extra_context:
-        extra = dict_to_dict( extra, extra_context )
+        dict_to_dict( extra, extra_context )
       
     return object_list(
         request,
