@@ -13,7 +13,7 @@ class QuestionAdmin(admin.ModelAdmin):
         
         instance = form.save( commit=False )
         if instance.id is None:
-            instance.parentscreated_by = request.user
+            instance.created_by = request.user
             
         instance.updated_by = request.user
         instance.save()
