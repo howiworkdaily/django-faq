@@ -53,6 +53,6 @@ class Answer(FaqBase):
     def __unicode__(self):
         return self.text
         
-    def save(self, force_insert=False, force_udpate=False):
+    def save(self, force_insert=False, force_update=False):
         self.updated_on = datetime.now()
         super(Answer, self).save(force_insert, force_update)
