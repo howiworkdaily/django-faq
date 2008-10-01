@@ -40,6 +40,16 @@ class Question(FaqBase):
     def save(self, force_insert=False, force_update=False):
         self.updated_on = datetime.now()
         super(Question, self).save(force_insert, force_update)
+    
+    def answer(self):
+        """
+        Returns first associated answer if it exists, otherwise None
+        
+        """
+        try:
+            return self.answer_set.all()[0]
+        except IndexError:
+            return None
         
 
 class Answer(FaqBase):
