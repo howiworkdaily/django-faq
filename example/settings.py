@@ -38,7 +38,7 @@ MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 #MEDIA_URL = 'http://127.0.0.1:8000/site_media/'
-MEDIA_URL = 'http://localhost:8000/media/' #
+MEDIA_URL = '/media/' #
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -65,20 +65,19 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.doc.XViewMiddleware',
-    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'example.urls'
 
 INTERNAL_IPS = (
-'127.0.0.1',
+    '127.0.0.1',
 )
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-	[os.path.join(os.path.dirname(__file__), "templates")]
+	[os.path.join(PROJECT_DIR, "templates")]
 )
 
 INSTALLED_APPS = (
@@ -86,8 +85,8 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
-	  'django.contrib.admin',
-	  'faq',
+	'django.contrib.admin',
+	'faq',
 )
 
 
