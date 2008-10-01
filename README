@@ -1,4 +1,11 @@
 
+UPDATES
+--------
+10.01 Merged LincolnLoop changes into master. 
+      - cleaned up base settings file.
+      - addded a helper method to question Model.
+      - some code cleanup for extraneous references.
+      - updated populating dict method to use Python's custom method
 
 Djangop-FAQ v.02
 ============
