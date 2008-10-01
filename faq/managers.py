@@ -17,7 +17,6 @@ class QuestionQuerySet(QuerySet):
         """
         
         if kwargs.get('slug'):
-            #import pdb; pdb.set_trace()
             slug = kwargs['slug']
             return self.filter(status__exact=enums.STATUS_ACTIVE, slug__exact=slug)
         else:
