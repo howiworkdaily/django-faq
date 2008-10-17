@@ -1,7 +1,6 @@
 from django.conf.urls.defaults import *
 from django.contrib import admin
-from faq import urls as faq_urls
-import settings
+from django.conf import settings
 from views import faq_list
 
 admin.autodiscover()
@@ -15,7 +14,7 @@ url (
     name = 'faq_list',
     ),
 
-(r'^faq/(.*)', faq_urls)
+(r'^faq/(.*)', include('faq.urls'))
 
 )
 
