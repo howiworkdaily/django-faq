@@ -1,16 +1,8 @@
 
-UPDATES
---------
-10.01 Merged LincolnLoop changes into master. 
-      - cleaned up base settings file.
-      - addded a helper method to question Model.
-      - some code cleanup for extraneous references.
-      - updated populating dict method to use Python's custom method
-
-Djangop-FAQ v.02
+Djangop-FAQ v.1.0
 ============
 
-A simple faq application for your Django powered site. I also made note to provide this app as an example of creating 
+An extremely simple faq application for your Django powered site. I also made note to provide this app as an example of creating 
 a reusable app following best practices - allowing for template overrides, extra_context arguments, etc. So 
 in theory you should be able to drop it on your Python path and get going pretty easy. I noted where appropriate some of the details. Search for '#NOTE' to see where I left those tidbits of info that provide some more details within the code.
 
