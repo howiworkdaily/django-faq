@@ -1,9 +1,6 @@
 from django.conf.urls.defaults import *
 from django.contrib import admin
-
-from views import *
-
-
+from views import question_detail, question_list
 
 admin.autodiscover()
 
@@ -19,7 +16,7 @@ url (
     regex = r'^questions/$',
     view = question_list,
     name = 'question_list',
-    )
+    ),
 
 )
 

@@ -26,9 +26,10 @@ class Question(FaqBase):
 
     slug = models.SlugField( max_length=100, help_text="This is a unique identifier that allows your questions to display its detail view, ex 'how-can-i-contribute'", )
     text = models.TextField(_('question'), help_text='The actual question itself.')
+    answer = models.TextField( _('answer'), help_text='The answer text.' )    
     status = models.IntegerField( choices=enums.QUESTION_STATUS_CHOICES, default=enums.STATUS_INACTIVE, help_text="Only questions with their status set to 'Active' will be displayed. " )
     order = models.IntegerField(_('order'), help_text='The order you would like the question to be displayed.')
-
+    
     objects = QuestionManager()
     
     class Meta:
@@ -37,32 +38,7 @@ class Question(FaqBase):
     def __unicode__(self):
         return self.text
 
-    def save(self, force_insert=False, force_update=False):
+    def save(self):
         self.updated_on = datetime.now()
-        super(Question, self).save(force_insert, force_update)
+        super(Question, self).save()
     
-    def answer(self):
-        """
-        Returns first associated answer if it exists, otherwise None
-        
-        """
-        try:
-            return self.answer_set.all()[0]
-        except IndexError:
-            return None
-        
-
-class Answer(FaqBase):
-    """
-    Represents an answer to a frequently asked question.
-
-    """
-    question = models.ForeignKey(Question, unique=True, help_text='What question is this answer associated to?', )
-    text = models.TextField( _('answer'), help_text='The answer text.' )
-
-    def __unicode__(self):
-        return self.text
-        
-    def save(self, force_insert=False, force_update=False):
-        self.updated_on = datetime.now()
-        super(Answer, self).save(force_insert, force_update)
