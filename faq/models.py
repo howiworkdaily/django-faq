@@ -28,12 +28,12 @@ class Question(FaqBase):
     text = models.TextField(_('question'), help_text='The actual question itself.')
     answer = models.TextField( _('answer'), help_text='The answer text.' )    
     status = models.IntegerField( choices=enums.QUESTION_STATUS_CHOICES, default=enums.STATUS_INACTIVE, help_text="Only questions with their status set to 'Active' will be displayed. " )
-    order = models.IntegerField(_('order'), help_text='The order you would like the question to be displayed.')
+    sort_order = models.IntegerField(_('sort order'), default=0, help_text='The order you would like the question to be displayed.')
     
     objects = QuestionManager()
     
     class Meta:
-        ordering = ['order',]
+        ordering = ['sort_order', 'created_on', ]
 
     def __unicode__(self):
         return self.text
