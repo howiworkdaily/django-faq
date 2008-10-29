@@ -1,19 +1,30 @@
 
-Djangop-FAQ v.1.0
-============
+django-faq v.1.0
+================
 
-An extremely simple faq application for your Django powered site. I also made note to provide this app as an example of creating 
-a reusable app following best practices - allowing for template overrides, extra_context arguments, etc. So 
-in theory you should be able to drop it on your Python path and get going pretty easy. I noted where appropriate some of the details. Search for '#NOTE' to see where I left those tidbits of info that provide some more details within the code.
+An extremely simple FAQ application for your Django powered site. I also made
+note to provide this app as an example of creating a reusable app following
+best practices - allowing for template overrides, extra_context arguments,
+etc. So in theory you should be able to drop it on your Python path and get
+going pretty easy. I noted where appropriate some of the details. Search for
+'#NOTE' to see where I left those tidbits of info that provide some more
+details within the code.
 
 Installation
 ============
 
 1. add 'faq' directory to your Python path.
 2. add 'faq' to your INSTALLED_APPS tuple found in your settings file.
-3. If you want to customize the templates then either create an 'faq' directory in your projects templates location, or you can also pass along custom 'template_name' arguments by creating your own view wrappers around the 'faq' app views. I show how to do the latter in the 'example' project included - look at the views.py file to see the details.
+3. If you want to customize the templates then either create an 'faq'
+   directory in your projects templates location, or you can also pass along
+   custom 'template_name' arguments by creating your own view wrappers around
+   the 'faq' app views. I show how to do the latter in the 'example' project
+   included - look at the views.py file to see the details.
 
 Example Site
 ============
 
-I included an example site in the /example directory. You should be able to simply execute './manage.py syncdb' and then './manage.py runserver' and have the example site up and running. I assume your system has sqlite3 available - it is set as the default database with the DATABASE_NAME = 'faq.db'
+I included an example site in the /example directory. You should be able to
+simply execute './manage.py syncdb' and then './manage.py runserver' and have
+the example site up and running. I assume your system has sqlite3 available -
+it is set as the default database with the DATABASE_NAME = 'faq.db'
