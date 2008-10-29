@@ -1,8 +1,5 @@
 from django.conf.urls.defaults import *
-from django.contrib import admin
 from views import question_detail, question_list
-
-admin.autodiscover()
 
 urlpatterns = patterns('',
 
