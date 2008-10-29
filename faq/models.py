@@ -2,6 +2,9 @@ from django.db import models
 from datetime import datetime
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
+from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
+
 from faq.managers import QuestionManager
 import faq.enums as enums
 
@@ -30,6 +33,11 @@ class Question(FaqBase):
     status = models.IntegerField( choices=enums.QUESTION_STATUS_CHOICES, default=enums.STATUS_INACTIVE, help_text="Only questions with their status set to 'Active' will be displayed. " )
     sort_order = models.IntegerField(_('sort order'), default=0, help_text='The order you would like the question to be displayed.')
     
+    # an object specific question
+    content_type = models.ForeignKey(ContentType, null=True, blank=True)
+    object_pk = models.PositiveIntegerField(null=True, blank=True)
+    content_object = generic.GenericForeignKey(fk_field="object_pk")
+    
     objects = QuestionManager()
     
     class Meta:
@@ -41,4 +49,12 @@ class Question(FaqBase):
     def save(self):
         self.updated_on = datetime.now()
         super(Question, self).save()
-    
+
+class QuestionAssociation(models.Model):
+    """
+    A generic relation between a Question and some other object in the system.
+    """
+    question = models.ForeignKey(Question)
+    content_type = models.ForeignKey(ContentType)
+    object_pk = models.PositiveIntegerField()
+    content_object = generic.GenericForeignKey(fk_field="object_pk")
