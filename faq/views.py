@@ -1,5 +1,5 @@
 from django.views.generic.list_detail import object_detail, object_list
-from models import Question
+from faq.models import Question
 import datetime
 
 

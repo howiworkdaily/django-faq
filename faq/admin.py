@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Question
+from faq.models import Question
 from datetime import datetime
             
 

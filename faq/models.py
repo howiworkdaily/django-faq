@@ -2,8 +2,8 @@ from django.db import models
 from datetime import datetime
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
-from managers import QuestionManager
-import enums
+from faq.managers import QuestionManager
+import faq.enums as enums
 
 class FaqBase(models.Model):
     '''

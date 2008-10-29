@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models.query import QuerySet
 import datetime
-import enums
+import faq.enums as enums
 
 
 class QuestionQuerySet(QuerySet):
