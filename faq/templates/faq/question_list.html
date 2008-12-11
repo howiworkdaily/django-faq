@@ -1,0 +1,27 @@
+{% extends "faq/base.html" %}
+
+{% block title %}{{ block.super }}: Example {% endblock %}
+
+{% block content %}
+<h1>{{ page_title }}</h1>
+
+<p>
+Demo typical faq page. Created on: {{ created_on|date:"M d, Y" }}
+</p>
+
+<h3>Questions</h3>
+
+<ol>
+{% for question in object_list %}
+
+<li>
+{{ question.text }}
+<br>
+<span class="answer">answer: {{ question.answer }}</span>
+</li>
+
+{% endfor %}
+</ol>
+
+
+{% endblock %}
