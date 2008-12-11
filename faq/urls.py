@@ -1,22 +1,21 @@
 from django.conf.urls.defaults import *
 from django.contrib import admin
-from views import question_detail, question_list
+from faq.views import faq_list_by_group, submit_faq
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
 
 url (
-    regex = r'^question/(?P<slug>[-\w]+)/$',
-    view = question_detail,
-    name = 'question_detail',
+    r'^$',
+    faq_list_by_group,
+    name = 'faq',
     ),
-
 url (
-    regex = r'^questions/$',
-    view = question_list,
-    name = 'question_list',
+    r'^submit_faq/$',
+    submit_faq,
+    {'success_url': '/faq/'},
+    name = 'submit',
     ),
-
 )
 

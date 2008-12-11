@@ -10,13 +10,18 @@
 }
 
 </style>
-
 </head>
 <body>
+{% if messages %}
+<ul id="messages">
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+<hr/>
+{% endif %}
 
-{% block content %}
-{% endblock %}
-
+{% block body %}{% endblock %}
 </body>
 
 </html>

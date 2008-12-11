@@ -1,19 +1,59 @@
 
-Djangop-FAQ v.1.0
-============
+Djangop-FAQ v.1.1.2
+===================
 
-An extremely simple faq application for your Django powered site. I also made note to provide this app as an example of creating 
-a reusable app following best practices - allowing for template overrides, extra_context arguments, etc. So 
-in theory you should be able to drop it on your Python path and get going pretty easy. I noted where appropriate some of the details. Search for '#NOTE' to see where I left those tidbits of info that provide some more details within the code.
+This is a simple faq application for your Django powered site.
+This app follows several "best practices" for reusable apps by allowing for template overrides and extra_context arguments and such.
+
+New in this version
+===================
+
+Question Headers can be created that can be used to group related questions into sections.
+
+Questions can be "protected" in which case they are only presented to authenticated users.
+
+There are some saved FAQs in a fixture named django-faq-FAQs.json that that provide the example app with some questions to view when you bring it up for the first time. These FAQs provide additional notes about installing and using django-faq.
+
+There is a SubmitFAQForm defined that you can use to allow site visitors to submit new questions and/or answers to the site administrator for consideration. All submitted questions are added as "inactive" and so it is up to the administrator to edit, activate or discard the question as well as set its' sort_order field and slug to reasonable values.
+
+The example app now has a convenient home page that appears as the default page. It has links to the available views.
+
+The views and templates have been refined to allow trivial integration with Pinax. See the notes below for details.
 
 Installation
 ============
 
 1. add 'faq' directory to your Python path.
-2. add 'faq' to your INSTALLED_APPS tuple found in your settings file.
-3. If you want to customize the templates then either create an 'faq' directory in your projects templates location, or you can also pass along custom 'template_name' arguments by creating your own view wrappers around the 'faq' app views. I show how to do the latter in the 'example' project included - look at the views.py file to see the details.
+2. add 'faq' to your INSTALLED_APPS in your settings.py file.
+3. If you want to customize the templates then either create an 'faq' directory in your projects templates location, or you can also pass along custom 'template_name' arguments by creating your own view wrappers around the 'faq' app views.  I show how to do the latter in the 'example' project included - look at the views.py file to see the details.
 
 Example Site
 ============
 
-I included an example site in the /example directory. You should be able to simply execute './manage.py syncdb' and then './manage.py runserver' and have the example site up and running. I assume your system has sqlite3 available - it is set as the default database with the DATABASE_NAME = 'faq.db'
+There is an example site in the /example directory. to try it out:
+1. Install django-faq as per the Installation section above.
+2. Execute './manage.py syncdb' (This assumes that sqlite3 is available as it is set as the default database with the DATABASE_NAME = 'faq.db'.)
+3. Execute './manage.py loaddata django-faq-FAQs' to load some FAQs about django-faq.
+4. Execute './manage.py runserver' and you will have the example site up and running. The home page will have links to get to the available views as well as to the admin (assuming that you have the admin installed and it uses the "/admin/" utl.) 
+5. After logging into the admin you will notice an additional questioni(s) appear in the FAQ. That question is "protected" and therefore not presented to non-authenticated users.
+6. The capability to submit an FAQ is available and works whether or not you are a logged in user. Note that a staff member will have to use the admin and review any submitted FAQs and clean them up and set them to active before they are viewable by the end user views.
+
+Integrating with Pinax
+======================
+
+1. Install the faq app from the django-faq distribution in the normal way.
+
+2. In your Pinax project add 'faq' to your INSTALLED_APPS in your settings.py file.
+
+3. Add this to your urls file::
+
+    (r'^faq/', include('faq.urls')),
+
+4. In your templates directory for your Pinax project add a new directory named 'faq'. Copy all of the files in django-faq/faq/templates/faq/ into the new faq directory that you just created.
+
+5. Remove the "base.html" file that you just copied and rename the "pinax_base.html" file to "base.html".
+
+6. If you want a TAB for the FAQs, add this to the 'right_tab' table in your "site_base.html" file::
+
+    <td class="tab rtab_faq"><div><a href="{% url faq %}">{% trans "FAQs" %}</a></div></td>
+

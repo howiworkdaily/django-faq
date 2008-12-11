@@ -2,39 +2,38 @@
 
 {% block title %}{{ block.super }}: Example {% endblock %}
 
-{% block content %}
+{% block body %}
 <h1>{{ page_title }}</h1>
-
 <p>
-Demo typical faq page. Created on: {{ created_on|date:"M d, Y" }}
+Last updated on: {{ updated_on|date:"M d, Y" }}
 </p>
-
 <h3>Questions</h3>
-
 <ol>
 {% for question in object_list %}
-
+{% if question.is_header %}
+<h4>{{ question.text }}</h4><br/>
+{% else %}
 <li>
 <a href="#{{ question.slug }}">{{ question.text }}</a>
-<br>
-<span class="answer">answer: {{ question.answer }}</span>
 </li>
-
+{% endif %}
 {% endfor %}
 </ol>
-
-
-<h3 style="margin-top: 1000px">Answers</h3>
-
-<ol style="margin-bottom: 1000px">
+<hr/>
+<h3 style="margin-top: 50px">Answers</h3>
+<ol style="margin-bottom: 800px">
 {% for question in object_list %}
+{% if question.is_active %}
 <li>
 <a id="{{ question.slug }}">
 <h3>{{ question.text }}</h3>
+<p>
+{% autoescape off %}
 {{ question.answer }}
+{% endautoescape %}
+</p>
 </li>
+{% endif %}
 {% endfor %}
 </ol>
-
-
 {% endblock %}

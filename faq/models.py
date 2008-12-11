@@ -27,8 +27,9 @@ class Question(FaqBase):
     slug = models.SlugField( max_length=100, help_text="This is a unique identifier that allows your questions to display its detail view, ex 'how-can-i-contribute'", )
     text = models.TextField(_('question'), help_text='The actual question itself.')
     answer = models.TextField( _('answer'), help_text='The answer text.' )    
-    status = models.IntegerField( choices=enums.QUESTION_STATUS_CHOICES, default=enums.STATUS_INACTIVE, help_text="Only questions with their status set to 'Active' will be displayed. " )
+    status = models.IntegerField( choices=enums.QUESTION_STATUS_CHOICES, default=enums.STATUS_INACTIVE, help_text="Only questions with their status set to 'Active' will be displayed. Questions marked as 'Group Header' are treated as such by views and templates that are set up to use them." )
     sort_order = models.IntegerField(_('sort order'), default=0, help_text='The order you would like the question to be displayed.')
+    protected = models.BooleanField( default="False", help_text="Set true if this question is only visible by authenticated users." )
     
     objects = QuestionManager()
     
@@ -41,4 +42,10 @@ class Question(FaqBase):
     def save(self):
         self.updated_on = datetime.now()
         super(Question, self).save()
-    
+
+    def is_header(self):
+        return self.status == enums.STATUS_HEADER
+
+    def is_active(self):
+        return self.status == enums.STATUS_ACTIVE
+
