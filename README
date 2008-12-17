@@ -1,5 +1,4 @@
 
-<<<<<<< HEAD:README
 django-faq v.1.0
 ================
 
@@ -29,13 +28,11 @@ There are some saved FAQs in a fixture named initial_data.json that provide the 
 There is a SubmitFAQForm defined that you can use to allow site visitors to submit new questions and/or answers to the site administrator for consideration. All submitted questions are added as "inactive" and so it is up to the administrator to edit, activate or discard the question as well as set its' sort_order field and slug to reasonable values.
 
 The example app now has a convenient home page that appears as the default page. It has links to the available views. The pinax_example app comes up in the manner of a normal Pinax site, but after you logon a working FAQ tab is available and sub-tabs also appear when you view the FAQ page.
->>>>>>> 5103a3f9e904b2c0ee327ce6cf0b3894a046d42a:README
 
 Installation
 ============
 
 1. add 'faq' directory to your Python path.
-<<<<<<< HEAD:README
 2. add 'faq' to your INSTALLED_APPS tuple found in your settings file.
 3. If you want to customize the templates then either create an 'faq'
    directory in your projects templates location, or you can also pass along
@@ -45,12 +42,10 @@ Installation
 =======
 2. add 'faq' to your INSTALLED_APPS in your settings.py file.
 3. If you want to customize the templates then either create an 'faq' directory in your projects templates location, or you can also pass along custom 'template_name' arguments by creating your own view wrappers around the 'faq' app views.
->>>>>>> 5103a3f9e904b2c0ee327ce6cf0b3894a046d42a:README
 
 Example Site
 ============
 
-<<<<<<< HEAD:README
 I included an example site in the /example directory. You should be able to
 simply execute './manage.py syncdb' and then './manage.py runserver' and have
 the example site up and running. I assume your system has sqlite3 available -
@@ -97,4 +92,3 @@ The home page that appears is the nominal Pinax home page. To get to the FAQ you
 
 2. Login to Pinax. After you are logged in, the FAQ tab appears. Select it. Viola!
 
->>>>>>> 5103a3f9e904b2c0ee327ce6cf0b3894a046d42a:README
