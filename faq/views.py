@@ -1,43 +1,5 @@
 import datetime
 from django.views.generic.list_detail import object_detail, object_list
-<<<<<<< HEAD:faq/views.py
-from faq.models import Question
-
-def question_detail(request, slug, template_name='faq/question_detail.html',
-                    extra_context=None):
-    """
-    Displays an invidual question.
-    """
-    return object_detail(
-        request,
-        template_name = template_name,
-        extra_context = extra_context or {},
-        slug = slug,
-        slug_field = 'slug',
-        queryset = Question.objects.active(),
-    )
-
-def question_list(request, template_name='faq/question_list.html',
-                  extra_context=None):
-    """
-    Displays a list of all the questions.
-    
-    """
-    # NOTE:
-    # this below is NOT NEEDED really so I would remove but I think it's a
-    # good example for people to see how they could "extend" their existing
-    # extra_context using a parameter value to allow developers to make their
-    # app more reusable we set the below dict value and then allow the user
-    # to pass along their own if they we then populate the user supplied
-    # extra_context using the update method
-
-    if extra_context is None:
-        extra_context = {}
-    extra = {
-        'created_on': datetime.datetime.now()
-    }
-    extra.update(extra_context)
-=======
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
@@ -77,16 +39,11 @@ def question_list( request, template_name='faq/question_list.html',
     extra = { 'updated_on': last_update['updated_on'] }
  
     extra.update( extra_context )
-      
->>>>>>> 5103a3f9e904b2c0ee327ce6cf0b3894a046d42a:faq/views.py
+    
     return object_list(
         request,
         template_name = template_name,
         extra_context = extra,
-<<<<<<< HEAD:faq/views.py
-        queryset = Question.objects.active(),
-    )
-=======
         queryset = query_set
     )
 
@@ -135,5 +92,3 @@ def submit_faq( request, form_class=SubmitFAQForm,
     context.update( extra_context )
     return render_to_response( template_name, context,
                               context_instance = RequestContext( request ))
-
->>>>>>> 5103a3f9e904b2c0ee327ce6cf0b3894a046d42a:faq/views.py

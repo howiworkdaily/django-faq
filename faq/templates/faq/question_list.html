@@ -2,17 +2,6 @@
 
 {% block title %}{{ block.super }}: Example {% endblock %}
 
-<<<<<<< HEAD:faq/templates/faq/question_list.html
-{% block content %}
-<h1>{{ page_title }}</h1>
-
-<p>
-Demo typical faq page. Created on: {{ created_on|date:"M d, Y" }}
-</p>
-
-<h3>Questions</h3>
-
-=======
 {% block body %}
 <h1>{{ page_title }}</h1>
 <p>
@@ -20,7 +9,6 @@ Last updated on: {{ updated_on|date:"M d, Y" }}
 </p>
 
 <h3>Questions</h3>
->>>>>>> 5103a3f9e904b2c0ee327ce6cf0b3894a046d42a:faq/templates/faq/question_list.html
 <ol>
 {% for question in object_list %}
 
@@ -33,9 +21,4 @@ Last updated on: {{ updated_on|date:"M d, Y" }}
 {% endfor %}
 </ol>
 
-<<<<<<< HEAD:faq/templates/faq/question_list.html
-
 {% endblock %}
-=======
-{% endblock %}
->>>>>>> 5103a3f9e904b2c0ee327ce6cf0b3894a046d42a:faq/templates/faq/question_list.html
