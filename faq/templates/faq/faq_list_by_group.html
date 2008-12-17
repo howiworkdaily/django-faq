@@ -1,0 +1,39 @@
+{% extends "faq/base.html" %}
+
+{% block title %}{{ block.super }}: Example {% endblock %}
+
+{% block body %}
+<h1>{{ page_title }}</h1>
+<p>
+Last updated on: {{ updated_on|date:"M d, Y" }}
+</p>
+<h3>Questions</h3>
+<ol>
+{% for question in object_list %}
+{% if question.is_header %}
+<h4>{{ question.text }}</h4><br/>
+{% else %}
+<li>
+<a href="#{{ question.slug }}">{{ question.text }}</a>
+</li>
+{% endif %}
+{% endfor %}
+</ol>
+<hr/>
+<h3 style="margin-top: 50px">Answers</h3>
+<ol style="margin-bottom: 800px">
+{% for question in object_list %}
+{% if question.is_active %}
+<li>
+<a id="{{ question.slug }}">
+<h3>{{ question.text }}</h3>
+<p>
+{% autoescape off %}
+{{ question.answer }}
+{% endautoescape %}
+</p>
+</li>
+{% endif %}
+{% endfor %}
+</ol>
+{% endblock %}

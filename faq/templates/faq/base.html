@@ -10,6 +10,7 @@
 }
 
 </style>
+<<<<<<< HEAD:faq/templates/faq/base.html
 
 </head>
 <body>
@@ -20,3 +21,20 @@
 </body>
 
 </html>
+=======
+</head>
+<body>
+{% if messages %}
+<ul id="messages">
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+<hr/>
+{% endif %}
+
+{% block body %}{% endblock %}
+</body>
+
+</html>
+>>>>>>> 5103a3f9e904b2c0ee327ce6cf0b3894a046d42a:faq/templates/faq/base.html
