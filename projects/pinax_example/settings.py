@@ -3,8 +3,7 @@
 
 import os.path
 
-# PINAX_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
-PINAX_ROOT = '/home/rock/downloads/pinax'
+PINAX_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 DEBUG = True
