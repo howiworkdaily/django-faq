@@ -1,22 +1,11 @@
 
-django-faq v.1.0
-================
-
-An extremely simple FAQ application for your Django powered site. I also made
-note to provide this app as an example of creating a reusable app following
-best practices - allowing for template overrides, extra_context arguments,
-etc. So in theory you should be able to drop it on your Python path and get
-going pretty easy. I noted where appropriate some of the details. Search for
-'#NOTE' to see where I left those tidbits of info that provide some more
-details within the code.
-
-Djangop-FAQ v.1.2
+Djangop-FAQ
 =================
 
 This is a simple faq application for your Django powered site.
 This app follows several "best practices" for reusable apps by allowing for template overrides and extra_context arguments and such.
 
-New in this version
+Features
 ===================
 
 Question Headers can be created that can be used to group related questions into sections.
@@ -39,6 +28,7 @@ Installation
    custom 'template_name' arguments by creating your own view wrappers around
    the 'faq' app views. I show how to do the latter in the 'example' project
    included - look at the views.py file to see the details.
+4. If you'd like to load some example data then execute ./manage.py loaddata example_data.json
 
 Example Site
 ============
@@ -54,11 +44,13 @@ There is a stand-alone example site in the projects/example directory. to try it
 
 2. Execute './manage.py syncdb' (This assumes that sqlite3 is available as it is set as the default database with the DATABASE_NAME = 'faq.db'.)
 
-3. Execute './manage.py runserver' and you will have the example site up and running. The home page will have links to get to the available views as well as to the admin (assuming that you have the admin installed and it uses the "/admin/" utl.) 
+3. If you'd like to load some example data then execute ./manage.py loaddata example_data.json
 
-4. After logging into the admin you will notice an additional question appears in the FAQ. That question is "protected" and therefore not presented to non-authenticated users.
+4. Execute './manage.py runserver' and you will have the example site up and running. The home page will have links to get to the available views as well as to the admin (assuming that you have the admin installed and it uses the "/admin/" utl.) 
 
-5. The capability to submit an FAQ is available and works whether or not you are a logged in user. Note that a staff member will have to use the admin and review any submitted FAQs and clean them up and set them to active before they are viewable by the end user views.
+5. After logging into the admin you will notice an additional question appears in the FAQ. That question is "protected" and therefore not presented to non-authenticated users.
+
+6. The capability to submit an FAQ is available and works whether or not you are a logged in user. Note that a staff member will have to use the admin and review any submitted FAQs and clean them up and set them to active before they are viewable by the end user views.
 
 Pinax Example Site
 ==================
@@ -82,6 +74,8 @@ To try out the Pinax example:
 3. Adjust PINAX_ROOT in the settings.py to point at your Pinax installation.
 
 4. Execute ./manage.py syncdb and then ./manage.py runserver and the app should come up.
+
+5. If you'd like to load some example data then execute ./manage.py loaddata example_data.json
 
 The home page that appears is the nominal Pinax home page. To get to the FAQ you can either:
 
