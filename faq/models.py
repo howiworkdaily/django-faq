@@ -5,6 +5,22 @@ from django.contrib.auth.models import User
 from managers import QuestionManager
 import enums
 
+class Topic(models.Model):
+    """
+    Generic Topics for FAQ question grouping
+    """
+
+    name = models.CharField(max_length=150)
+    slug = models.SlugField(max_length=150)
+    created_on = models.DateTimeField(default=datetime.now)
+
+    class Meta:
+        ordering = ['name']
+
+    def __unicode__(self):
+        return self.name
+
+
 class FaqBase(models.Model):
     '''
     Base class for models.
@@ -25,6 +41,7 @@ class Question(FaqBase):
     """
 
     slug = models.SlugField( max_length=100, help_text="This is a unique identifier that allows your questions to display its detail view, ex 'how-can-i-contribute'", )
+    topic = models.ForeignKey(Topic)
     text = models.TextField(_('question'), help_text='The actual question itself.')
     answer = models.TextField( _('answer'), help_text='The answer text.' )    
     status = models.IntegerField( choices=enums.QUESTION_STATUS_CHOICES, default=enums.STATUS_INACTIVE, help_text="Only questions with their status set to 'Active' will be displayed. Questions marked as 'Group Header' are treated as such by views and templates that are set up to use them." )
