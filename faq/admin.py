@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Question
+from models import Question, Topic
 from datetime import datetime
             
 
@@ -22,3 +22,4 @@ class QuestionAdmin(admin.ModelAdmin):
         return instance
 
 admin.site.register(Question, QuestionAdmin)
+admin.site.register(Topic)
