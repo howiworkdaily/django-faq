@@ -12,7 +12,7 @@ class Topic(models.Model):
 
     name = models.CharField(max_length=150)
     slug = models.SlugField(max_length=150)
-    created_on = models.DateTimeField(default=datetime.now)
+    created_on = models.DateTimeField(default=datetime.now, default=datetime.now, editable=False)
 
     class Meta:
         ordering = ['name']
