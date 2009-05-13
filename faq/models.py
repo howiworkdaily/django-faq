@@ -56,9 +56,9 @@ class Question(FaqBase):
     def __unicode__(self):
         return self.text
 
-    def save(self):
+    def save(self, *args, **kwargs):
         self.updated_on = datetime.now()
-        super(Question, self).save()
+        super(Question, self).save(*args, **kwargs)
 
     def is_header(self):
         return self.status == enums.STATUS_HEADER
