@@ -12,9 +12,10 @@ class Topic(models.Model):
 
     name = models.CharField(max_length=150)
     slug = models.SlugField(max_length=150)
+    sort_order = models.IntegerField(_('sort order'), default=0, help_text='The order you would like the topic to be displayed.')
 
     class Meta:
-        ordering = ['name']
+        ordering = ['sort_order']
 
     def __unicode__(self):
         return self.name
