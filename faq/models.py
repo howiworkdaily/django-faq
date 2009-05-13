@@ -15,7 +15,7 @@ class Topic(models.Model):
     sort_order = models.IntegerField(_('sort order'), default=0, help_text='The order you would like the topic to be displayed.')
 
     class Meta:
-        ordering = ['sort_order']
+        ordering = ['sort_order', 'name']
 
     def __unicode__(self):
         return self.name
