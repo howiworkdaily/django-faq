@@ -2,7 +2,11 @@ from django.contrib import admin
 from models import Question, Topic
 from datetime import datetime
             
+class TopicAdmin(admin.ModelAdmin):
 
+    prepopulated_fields = {'slug':('name',)}
+
+    
 class QuestionAdmin(admin.ModelAdmin):
   
     list_display = ['text', 'sort_order', 'created_by', 'created_on', 'updated_by', 'updated_on', 'status']
@@ -22,4 +26,4 @@ class QuestionAdmin(admin.ModelAdmin):
         return instance
 
 admin.site.register(Question, QuestionAdmin)
-admin.site.register(Topic)
+admin.site.register(Topic, TopicAdmin)
