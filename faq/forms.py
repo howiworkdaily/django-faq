@@ -8,10 +8,11 @@ but actually it is, only it is added as inactive.
 
 import datetime
 from django import forms
-from faq.models import Question
+from faq.models import Question, Topic
 from faq.enums import STATUS_INACTIVE
 
 class SubmitFAQForm(forms.Form):
+    topic    = forms.ModelChoiceField(queryset=Topic.objects.all(), empty_label=None)
     question = forms.CharField(max_length=512,min_length=4,widget=forms.Textarea)
     answer   = forms.CharField(required=False,widget=forms.Textarea)
 
@@ -27,8 +28,10 @@ class SubmitFAQForm(forms.Form):
                                                 dt.hour, dt.minute, dt.second )
         question = self.cleaned_data['question']
         answer   = self.cleaned_data['answer']
+        topic   = self.cleaned_data['topic']
         new_question = Question( text=question, answer=answer,
                                  slug=slug_str, sort_order = 999,
-                                 protected = False, status = STATUS_INACTIVE )
+                                 protected = False, status = STATUS_INACTIVE,
+                                 topic=topic )
         return new_question
 
