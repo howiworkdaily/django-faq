@@ -20,7 +20,7 @@ def do_faqs_for_topic(parser, token):
     the supplied topic argument must be in the slug format 'topic-name'
     
     Example usage:
-    {% faqs_for_topic 5 topicslug as faqs %}
+    {% faqs_for_topic [5] [topicslug] as [faqs] %}
     """
 
     args = token.contents.split()
