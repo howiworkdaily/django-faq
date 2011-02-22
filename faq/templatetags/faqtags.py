@@ -56,7 +56,7 @@ def do_faq_list(parser, token):
     args = token.contents.split()
     if len(args) != 4:
         raise TemplateSyntaxError, "faq_list tag takes exactly four arguments"
-    if args[3] != 'as':
+    if args[2] != 'as':
         raise TemplateSyntaxError, "second argument to the faq_list tag must be 'as'"
 
     return FaqNode(args[1], args[3])
