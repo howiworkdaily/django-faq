@@ -14,7 +14,7 @@ class FaqListNode(Node):
     def render(self, context):
         context[self.varname] = Question.objects.filter(
             topic__slug=self.topic,
-            status__exact=enums.STATUS_ACTIVE)[:self.num]
+            status__exact=STATUS_ACTIVE)[:self.num]
         return ''
 
 
@@ -44,7 +44,7 @@ class FaqNode(Node):
 
     def render(self, context):
         context[self.varname] = Question.objects.filter(
-            status__exact=enums.STATUS_ACTIVE)[:self.num]
+            status__exact=STATUS_ACTIVE)[:self.num]
         return ''
 
 def do_faq_list(parser, token):
