@@ -11,7 +11,7 @@ class FaqListNode(Node):
         self.num, self.topic, self.varname = num, topic, varname
 
     def render(self, context):
-        context[self.varname] = Question.objects.filter(topic__slug=self.topic)[:self.num]
+        context[self.varname] = Question.objects.active(topic__slug=self.topic)[:self.num]
         return ''
 
 def do_faqs_for_topic(parser, token):
