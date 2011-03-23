@@ -1,6 +1,6 @@
 from django import template
 from django.template import Library, Node, Variable, TemplateSyntaxError
-
+import enums
 
 from faq.models import Question
 
@@ -12,7 +12,9 @@ class FaqListNode(Node):
         self.num, self.topic, self.varname = num, topic, varname
 
     def render(self, context):
-        context[self.varname] = Question.objects.active(topic__slug=self.topic)[:self.num]
+        context[self.varname] = Question.objects.active.filter(
+            topic__slug=self.topic,
+            status__exact=enums.STATUS_ACTIVE)[:self.num]
         return ''
 
 
@@ -41,7 +43,8 @@ class FaqNode(Node):
         self.num, self.varname = num, varname
 
     def render(self, context):
-        context[self.varname] = Question.objects.active()[:self.num]
+        context[self.varname] = Question.objects.filter(
+            status__exact=enums.STATUS_ACTIVE)[:self.num]
         return ''
 
 def do_faq_list(parser, token):
