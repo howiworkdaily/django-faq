@@ -1,6 +1,6 @@
 from django import template
 from django.template import Library, Node, Variable, TemplateSyntaxError
-import faq.enums
+from faq.enums import *
 
 from faq.models import Question
 
