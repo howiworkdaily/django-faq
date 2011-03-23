@@ -12,7 +12,7 @@ class FaqListNode(Node):
         self.num, self.topic, self.varname = num, topic, varname
 
     def render(self, context):
-        context[self.varname] = Question.objects.active.filter(
+        context[self.varname] = Question.objects.filter(
             topic__slug=self.topic,
             status__exact=enums.STATUS_ACTIVE)[:self.num]
         return ''
