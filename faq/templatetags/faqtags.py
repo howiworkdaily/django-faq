@@ -41,7 +41,7 @@ class FaqNode(Node):
         self.num, self.varname = num, varname
 
     def render(self, context):
-        context[self.varname] = Question.objects.all()[:self.num]
+        context[self.varname] = Question.objects.active()[:self.num]
         return ''
 
 def do_faq_list(parser, token):
