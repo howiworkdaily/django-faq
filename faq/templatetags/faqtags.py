@@ -1,12 +1,12 @@
 from __future__ import absolute_import
 
 from django import template
-from .enums import STATUS_ACTIVE
-from .models import Question, Topic
+from ..enums import STATUS_ACTIVE
+from ..models import Question, Topic
 
 register = template.Library()
 
-class FaqListNode(template.Node):
+class FaqsForTopicNode(template.Node):
     def __init__(self, num, topic, varname):
         self.num = template.Variable(num)
         self.topic = template.Variable(topic)
@@ -45,7 +45,7 @@ def faqs_for_topic(parser, token):
     if args[3] != 'as':
         raise template.TemplateSyntaxError("third argument to the %s tag must be 'as'" % args[0])
 
-    return FaqListNode(args[1], args[2], args[4])
+    return FaqsForTopicNode(args[1], args[2], args[4])
 
 class FaqNode(template.Node):
     def __init__(self, num, varname):
@@ -62,7 +62,7 @@ class FaqNode(template.Node):
         return ''
 
 @register.tag
-def do_faq_list(parser, token):
+def faq_list(parser, token):
     """
     returns a generic list of 'count' faq's to display in a list 
     ordered by the faq sort order.
