@@ -26,6 +26,11 @@ All submitted questions are added as "inactive" and so it is up to the
 administrator to edit, activate or discard the question as well as set its'
 sort_order field and slug to reasonable values.
 
+Requirements
+============
+
+Django 1.3, Python 2.5 or greater.
+
 Installation
 ============
 
