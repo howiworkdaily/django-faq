@@ -1,4 +1,5 @@
-# Dependencies required to develop this app.
+# Dependencies required to develop/test this app.
 
-tox
 coverage
+mock
+tox
