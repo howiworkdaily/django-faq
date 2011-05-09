@@ -49,7 +49,7 @@ app views. I show how to do the latter in the 'example' project included - look
 at the views.py file to see the details.
    
 If you'd like to load some example data then run ``python manage.py loaddata
-example_data.json``
+faq_test_data.json``
 
 Example Site
 ============
@@ -63,7 +63,7 @@ try it out:
    you'll need to change the ``DATABASES`` setting first.)
 
 3. If you'd like to load some example data then run 
-   ``python manage.py loaddata example_data.json``
+   ``python manage.py loaddata faq_test_data.json``
 
 4. Run ``python manage.py runserver`` and you will have the example site up and
    running. The home page will have links to get to the available views as well as

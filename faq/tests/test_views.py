@@ -7,10 +7,9 @@ from ..models import Topic, Question
 
 class FAQViewTests(django.test.TestCase):
     urls = 'faq.urls'
+    fixtures = ['faq_test_data.json']
 
     def setUp(self):
-        self.topic = Topic.objects.create(name='T', slug='t')
-        
         # Make some test templates available.
         self._oldtd = settings.TEMPLATE_DIRS
         settings.TEMPLATE_DIRS = [os.path.join(os.path.dirname(__file__), 'templates')]
@@ -20,7 +19,7 @@ class FAQViewTests(django.test.TestCase):
     
     def test_submit_faq_view(self):
         data = {
-            'topic': str(self.topic.pk),
+            'topic': '1',
             'question': 'What is your favorite color?',
             'answer': 'Blue. I mean red. I mean *AAAAHHHHH....*',
         }
