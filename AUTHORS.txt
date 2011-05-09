@@ -1,0 +1,12 @@
+Django-FAQ was originally created by Kevin Fricovsky.
+
+Other contributors:
+
+    * Brian Rosner
+    * Greg Newman
+    * Jacob Kaplan-Moss
+    * Jannis Leidel
+    * Justin Lilly
+    * Peter Baumgartner
+    * Rock Howard
+    * Sean O'Connor
