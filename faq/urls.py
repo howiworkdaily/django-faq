@@ -1,21 +1,19 @@
-from django.conf.urls.defaults import *
-from django.contrib import admin
-from faq.views import faq_list_by_group, submit_faq
+from __future__ import absolute_import
 
-admin.autodiscover()
+from django.conf.urls.defaults import *
+from . import views as faq_views
 
 urlpatterns = patterns('',
-
-url (
-    r'^$',
-    faq_list_by_group,
-    name = 'faq',
+    url(regex = r'^$',
+        view  = faq_views.question_list,
+        name  = 'faq_question_list',
     ),
-url (
-    r'^submit_faq/$',
-    submit_faq,
-    {'success_url': '/faq/'},
-    name = 'submit',
+    url(regex = r'^submit/$',
+        view  = faq_views.submit_faq,
+        name  = 'faq_submit',
+    ),
+    url(regex = r'^(?P<slug>[\w-]+)/$',
+        view  = faq_views.question_detail,
+        name  = 'faq_question_detail',
     ),
 )
-

@@ -10,6 +10,7 @@ settings.configure(
         'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': ':memory;'}
     },
     INSTALLED_APPS = ['django.contrib.auth', 'django.contrib.contenttypes', 'faq'],
+    ROOT_URLCONF = 'faq.urls',
 )
 
 def runtests():
