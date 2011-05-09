@@ -1,10 +1,14 @@
+import os
 from setuptools import setup, find_packages
+
+def read(fname):
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
     name = 'django-faq',
     version = '0.1.0',
     description = 'A simple FAQ application for Django sites.',
-    long_description = open('README.rst').read(),
+    long_description = read('README.rst'),
     
     author  ='Kevin Fricovsky',
     author_email = 'kfricovsky@gmail.com',
@@ -24,4 +28,5 @@ setup(
     ],
     
     install_requires = ['setuptools', 'Django >= 1.3'],
+    test_suite = "faq._testrunner.runtests"
 )
