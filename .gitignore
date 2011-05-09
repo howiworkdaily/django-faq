@@ -3,3 +3,5 @@
 *.db
 *.egg-info
 .tox/
+.coverage
+htmlcov/

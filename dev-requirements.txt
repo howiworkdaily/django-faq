@@ -1,3 +1,4 @@
 # Dependencies required to develop this app.
 
 tox
+coverage
