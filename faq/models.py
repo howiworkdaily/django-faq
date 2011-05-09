@@ -9,10 +9,10 @@ class Topic(models.Model):
     """
     Generic Topics for FAQ question grouping
     """
-
     name = models.CharField(max_length=150)
     slug = models.SlugField(max_length=150)
-    sort_order = models.IntegerField(_('sort order'), default=0, help_text='The order you would like the topic to be displayed.')
+    sort_order = models.IntegerField(_('sort order'), default=0,
+        help_text='The order you would like the topic to be displayed.')
 
     class Meta:
         ordering = ['sort_order', 'name']
@@ -20,26 +20,11 @@ class Topic(models.Model):
     def __unicode__(self):
         return self.name
 
-
-class FaqBase(models.Model):
-    '''
-    Base class for models.
-    
-    '''
+class Question(models.Model):
     created_by = models.ForeignKey(User, null=True, editable=False, related_name="%(class)s_created_by" )    
     created_on = models.DateTimeField( _('created on'), default=datetime.now, editable=False,  )
     updated_on = models.DateTimeField( _('updated on'), editable=False )
     updated_by = models.ForeignKey(User, null=True, editable=False )  
-    
-    class Meta:
-        abstract = True
-
-class Question(FaqBase):
-    """
-    Represents a frequently asked question.
-
-    """
-
     slug = models.SlugField( max_length=100, help_text="This is a unique identifier that allows your questions to display its detail view, ex 'how-can-i-contribute'", )
     topic = models.ForeignKey(Topic)
     text = models.TextField(_('question'), help_text='The actual question itself.')
