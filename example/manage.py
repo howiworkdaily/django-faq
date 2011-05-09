@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 
-#add faq app to python path
+import os
 import sys
-from os.path import abspath, dirname, join
-sys.path.append(abspath(join(dirname(__file__), '..')))
+
+try:
+    import faq
+except ImportError:
+    sys.stderr.write("django-faq isn't installed; trying to use a source checkout in ../faq.")
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from django.core.management import execute_manager
 try:

@@ -49,7 +49,7 @@ example_data.json``
 Example Site
 ============
 
-There is a stand-alone example site in the ``projects/example`` directory. To
+There is a stand-alone example site in the ``example`` directory. To
 try it out:
 
 1. Install django-faq (see above).
