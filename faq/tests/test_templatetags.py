@@ -78,7 +78,7 @@ class FAQTagsNodeTests(django.test.TestCase):
     
     def test_faqs_for_topic_node(self):
         context = template.Context()
-        node = faqtags.FaqsForTopicNode('5', '"silly-questions"', "faqs")
+        node = faqtags.FaqListNode(num='5', topic='"silly-questions"', varname="faqs")
         content = node.render(context)
         self.assertEqual(content, "")
         self.assertQuerysetEqual(context['faqs'], 
@@ -91,14 +91,14 @@ class FAQTagsNodeTests(django.test.TestCase):
         """
         context = template.Context({'topic': Topic.objects.get(pk=1),
                                     'number': 1})
-        node = faqtags.FaqsForTopicNode('number', 'topic', "faqs")
+        node = faqtags.FaqListNode(num='number', topic='topic', varname="faqs")
         content = node.render(context)
         self.assertEqual(content, "")
         self.assertQuerysetEqual(context['faqs'], ["<Question: What is your favorite color?>"])
     
     def test_faqs_for_topic_node_invalid_variables(self):
         context = template.Context()
-        node = faqtags.FaqsForTopicNode('number', 'topic', "faqs")
+        node = faqtags.FaqListNode(num='number', topic='topic', varname="faqs")
         content = node.render(context)
         self.assertEqual(content, "")
         self.assert_("faqs" not in context,
@@ -106,7 +106,7 @@ class FAQTagsNodeTests(django.test.TestCase):
     
     def test_faq_list_node(self):
         context = template.Context()
-        node = faqtags.FaqNode('5', "faqs")
+        node = faqtags.FaqListNode(num='5', varname="faqs")
         content = node.render(context)
         self.assertEqual(content, "")
         self.assertQuerysetEqual(context['faqs'], 
@@ -120,14 +120,14 @@ class FAQTagsNodeTests(django.test.TestCase):
         """
         context = template.Context({'topic': Topic.objects.get(pk=1),
                                     'number': 1})
-        node = faqtags.FaqNode('number', "faqs")
+        node = faqtags.FaqListNode(num='number', varname="faqs")
         content = node.render(context)
         self.assertEqual(content, "")
         self.assertQuerysetEqual(context['faqs'], ["<Question: What is your favorite color?>"])
     
     def test_faq_list_node_invalid_variables(self):
         context = template.Context()
-        node = faqtags.FaqNode('number', "faqs")
+        node = faqtags.FaqListNode(num='number', varname="faqs")
         content = node.render(context)
         self.assertEqual(content, "")
         self.assert_("faqs" not in context,

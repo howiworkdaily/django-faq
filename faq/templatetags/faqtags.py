@@ -6,26 +6,27 @@ from ..models import Question, Topic
 
 register = template.Library()
 
-class FaqsForTopicNode(template.Node):
-    def __init__(self, num, topic, varname):
+class FaqListNode(template.Node):
+    def __init__(self, num, varname, topic=None):
         self.num = template.Variable(num)
-        self.topic = template.Variable(topic)
+        self.topic = template.Variable(topic) if topic else None
         self.varname = varname
 
     def render(self, context):
         try:
             num = self.num.resolve(context)
-            topic = self.topic.resolve(context)
+            topic = self.topic.resolve(context) if self.topic else None
         except template.VariableDoesNotExist:
             return ''
-            
+        
         if isinstance(topic, Topic):
             qs = Question.objects.filter(topic=topic)
-        else:
+        elif topic is not None:
             qs = Question.objects.filter(topic__slug=topic)
-        
+        else:
+            qs = Question.objects.all()
+            
         context[self.varname] = qs.filter(status=STATUS_ACTIVE)[:num]
-
         return ''
 
 @register.tag
@@ -45,21 +46,8 @@ def faqs_for_topic(parser, token):
     if args[3] != 'as':
         raise template.TemplateSyntaxError("third argument to the %s tag must be 'as'" % args[0])
 
-    return FaqsForTopicNode(args[1], args[2], args[4])
+    return FaqListNode(num=args[1], topic=args[2], varname=args[4])
 
-class FaqNode(template.Node):
-    def __init__(self, num, varname):
-        self.num = template.Variable(num)
-        self.varname = varname
-
-    def render(self, context):
-        try:
-            num = self.num.resolve(context)
-        except template.VariableDoesNotExist:
-            return ''
-            
-        context[self.varname] = Question.objects.filter(status=STATUS_ACTIVE)[:num]
-        return ''
 
 @register.tag
 def faq_list(parser, token):
@@ -77,4 +65,4 @@ def faq_list(parser, token):
     if args[2] != 'as':
         raise template.TemplateSyntaxError("second argument to the %s tag must be 'as'" % args[0])
 
-    return FaqNode(args[1], args[3])
+    return FaqListNode(num=args[1], varname=args[3])
