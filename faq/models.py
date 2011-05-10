@@ -33,7 +33,7 @@ class Question(models.Model):
     )
     
     text = models.TextField(_('question'), help_text=_('The actual question itself.'))
-    answer = models.TextField(_('answer'), help_text=_('The answer text.'))
+    answer = models.TextField(_('answer'), blank=True, help_text=_('The answer text.'))
     topic = models.ForeignKey(Topic, verbose_name=_('topic'), related_name='questions')
     slug = models.SlugField(_('slug'), max_length=100)
     status = models.IntegerField(_('status'),

@@ -48,21 +48,20 @@ def question_list(request, template_name='faq/question_list.html',
 def submit_faq(request, form_class=SubmitFAQForm,
                template_name="faq/submit_question.html",
                success_url=None, extra_context={}):
-    form = form_class(request.POST or NOne)
+    
+    if request.user.is_authenticated():
+        instance = Question(created_by=request.user)
+    else:
+        instance = Question()
+        
+    form = form_class(request.POST or None, instance=instance)
     if form.is_valid():
         question = form.save()
-        if request.user.is_authenticated():
-            slug = question.slug
-            question.slug = slug.replace("anon",request.user.username)
-            question.created_by = request.user
-            
         # Set up a confirmation message for the user
         messages.success(request, 
             _("Your question was submitted and will be reviewed by for inclusion in the FAQ."),
             fail_silently=True,
         )
-            
-        question.save()
         return redirect(success_url if success_url else "faq_question_list")
 
     context = {'form': form}

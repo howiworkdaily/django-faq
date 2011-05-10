@@ -20,12 +20,12 @@ class FAQViewTests(django.test.TestCase):
     def test_submit_faq_view(self):
         data = {
             'topic': '1',
-            'question': 'What is your favorite color?',
+            'text': 'What is your favorite color?',
             'answer': 'Blue. I mean red. I mean *AAAAHHHHH....*',
         }
         response = self.client.post('/submit/', data)
-        # self.assertRedirects(response, "/what-is-your-favorite-color/")
+        self.assertRedirects(response, "/")
         self.assert_(
-            Question.objects.filter(text=data['question']).exists(),
+            Question.objects.filter(text=data['text']).exists(),
             "Expected question object wasn't created."
         )
