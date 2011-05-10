@@ -2,39 +2,15 @@ from django.db import models
 from django.db.models.query import QuerySet
 
 class QuestionQuerySet(QuerySet):
-    """
-    A basic ''QuerySet'' subclass, provides query functionality and some helper methods for an intuitive interface.
-    
-    """
-    
-    def active(self, **kwargs):
+    def active(self):
         """
-        A utility method that filters results based on ''Question'' models that are only ''Active''.
-
+        Return only "active" (i.e. published) questions.
         """
-        group = False
-        if kwargs.get('group'):
-            group = kwargs['group']
-
-        if kwargs.get('slug'):
-            slug = kwargs['slug']
-            return self.filter(status__exact=self.model.ACTIVE, slug__exact=slug)
-        elif group:
-            return self.exclude(status__exact=self.model.INACTIVE)
-        else:
-            return self.filter(status__exact=self.model.ACTIVE)
-
+        return self.filter(status__exact=self.model.ACTIVE)
 
 class QuestionManager(models.Manager):
-    """
-    A basic ''Manager'' subclass which returns a ''QuestionQuerySet''. It provides simple access to helpful utility methods.  
-    """
-
     def get_query_set(self):
         return QuestionQuerySet(self.model)
 
-    def active(self, slug=None, group=False, user=None ):
-        qs = self.get_query_set().active(slug=slug,group=group)
-        if not user or not user.is_authenticated():
-            return qs.exclude(protected=True)
-        return qs
+    def active(self):
+        return self.get_query_set().active()
