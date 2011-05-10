@@ -1,11 +1,12 @@
 from __future__ import absolute_import
 from django.db.models import Max
+from django.core.urlresolvers import reverse, NoReverseMatch
 from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import redirect, render, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.views.generic.list_detail import object_detail, object_list
-from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic import ListView, DetailView, TemplateView, CreateView
 from .models import Question, Topic
 from .forms import SubmitFAQForm
 
@@ -75,28 +76,34 @@ class QuestionDetail(DetailView):
         
         return qs
 
-def submit_faq(request, form_class=SubmitFAQForm,
-               template_name="faq/submit_question.html",
-               success_url=None, extra_context={}):
+class SubmitFAQ(CreateView):
+    model = Question
+    form_class = SubmitFAQForm
+    template_name = "faq/submit_question.html"
+    success_view_name = "faq_submit_thanks"
     
-    if request.user.is_authenticated():
-        instance = Question(created_by=request.user)
-    else:
-        instance = Question()
-        
-    form = form_class(request.POST or None, instance=instance)
-    if form.is_valid():
-        question = form.save()
-        # Set up a confirmation message for the user
-        messages.success(request, 
+    def get_form_kwargs(self):
+        kwargs = super(SubmitFAQ, self).get_form_kwargs()
+        kwargs['instance'] = Question()
+        if self.request.user.is_authenticated():
+            kwargs['instance'].created_by = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        response = super(SubmitFAQ, self).form_valid(form)
+        messages.success(self.request, 
             _("Your question was submitted and will be reviewed by for inclusion in the FAQ."),
             fail_silently=True,
         )
-        return redirect(success_url if success_url else "faq_submit_thanks")
-
-    context = {'form': form}
-    context.update(extra_context)
-    return render(request, template_name, context)
+        return response
+        
+    def get_success_url(self):
+        # The superclass version raises ImproperlyConfigered if self.success_url
+        # isn't set. Instead of that, we'll try to redirect to a named view.
+        if self.success_url:
+            return self.success_url
+        else:
+            return reverse(self.success_view_name)
 
 class SubmitFAQThanks(TemplateView):
     template_name = "faq/submit_thanks.html"
