@@ -1,8 +1,9 @@
 from __future__ import absolute_import
 
-import os
 import datetime
 import django.test
+import mock
+import os
 from django.conf import settings
 from ..models import Topic, Question
 
@@ -23,13 +24,15 @@ class FAQViewTests(django.test.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "faq/submit_question.html")
 
-    def test_submit_faq_post(self):
+    @mock.patch('django.contrib.messages')
+    def test_submit_faq_post(self, mock_messages):
         data = {
             'topic': '1',
             'text': 'What is your favorite color?',
             'answer': 'Blue. I mean red. I mean *AAAAHHHHH....*',
         }
         response = self.client.post('/submit/', data)
+        mock_messages.sucess.assert_called()
         self.assertRedirects(response, "/submit/thanks/")
         self.assert_(
             Question.objects.filter(text=data['text']).exists(),
