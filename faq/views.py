@@ -1,49 +1,79 @@
 from __future__ import absolute_import
+from django.db.models import Max
 from django.contrib import messages
 from django.http import Http404
-from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, render
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import redirect, render, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.views.generic.list_detail import object_detail, object_list
-from .models import Question
+from django.views.generic import ListView, DetailView, TemplateView
+from .models import Question, Topic
 from .forms import SubmitFAQForm
 
-def question_detail(request, slug, template_name='faq/question_detail.html', extra_context={}):
-    """
-    Displays an individual question.
-    """
-    return object_detail(
-        request,
-        template_name = template_name,
-        extra_context = extra_context,
-        slug = slug,
-        slug_field = 'slug',
-        queryset = Question.objects.active(user=request.user),
-    )    
-        
-def question_list(request, template_name='faq/question_list.html',
-                  extra_context={}, group=False):
-    '''
-    Displays a list of all the questions.
-    '''
-    query_set = Question.objects.active(group=group,user=request.user)
-    
-    if len(query_set) == 0:
-	raise Http404()
+class TopicList(ListView):
+    model = Topic
+    template = "faq/topic_list.html"
+    allow_empty = True
+    context_object_name = "topics"
 
-    last_update = query_set.values('updated_on').order_by('-updated_on',)[0]    
-    extra = { 'updated_on': last_update['updated_on'] }
- 
-    extra.update( extra_context )
+    def get_context_data(self, **kwargs):
+        data = super(TopicList, self).get_context_data(**kwargs)
+        
+        # This slightly magical queryset grabs the latest update date for 
+        # topic's questions, then the latest date for that whole group.
+        # In other words, it's::
+        #
+        #   max(max(q.updated_on for q in topic.questions) for topic in topics)
+        #
+        # Except performed in the DB, so quite a bit more efficiant.
+        #
+        # We can't just do Question.objects.all().aggregate(max('updated_on'))
+        # because that'd prevent a subclass from changing the view's queryset
+        # (or even model -- this view'll even work with a different model
+        # as long as that model has a many-to-one to something called "questions"
+        # with an "updated_on" field). So this magic is the price we pay for
+        # being generic.
+        last_updated = (data['object_list']
+                            .annotate(updated=Max('questions__updated_on'))
+                            .aggregate(Max('updated')))
+        
+        data.update({'last_updated': last_updated['updated__max']})
+        return data
+
+class TopicDetail(DetailView):
+    model = Topic
+    template = "faq/topic_detail.html"
+    context_object_name = "topic"
     
-    return object_list(
-        request,
-        template_name = template_name,
-        extra_context = extra,
-        queryset = query_set
-    )
+    def get_context_data(self, **kwargs):
+        # Include a list of questions this user has access to. If the user is
+        # logged in, this includes protected questions. Otherwise, not.
+        qs = self.object.questions.active()
+        if self.request.user.is_anonymous():
+            qs = qs.exclude(protected=True)
+
+        data = super(TopicDetail, self).get_context_data(**kwargs)
+        data.update({
+            'questions': qs,
+            'last_updated': qs.aggregate(updated=Max('updated_on'))['updated'],
+        })
+        return data
+
+class QuestionDetail(DetailView):
+    queryset = Question.objects.active()
+    template = "faq/question_detail.html"
+    
+    def get_queryset(self):        
+        topic = get_object_or_404(Topic, slug=self.kwargs['topic_slug'])
+        
+        # Careful here not to hardcode a base queryset. This lets
+        # subclassing users re-use this view on a subset of questions, or
+        # even on a new model.
+        # FIXME: similar logic as above. This should push down into managers.
+        qs = super(QuestionDetail, self).get_queryset().filter(topic=topic)
+        if self.request.user.is_anonymous():
+            qs = qs.exclude(protected=True)
+        
+        return qs
 
 def submit_faq(request, form_class=SubmitFAQForm,
                template_name="faq/submit_question.html",
@@ -62,8 +92,11 @@ def submit_faq(request, form_class=SubmitFAQForm,
             _("Your question was submitted and will be reviewed by for inclusion in the FAQ."),
             fail_silently=True,
         )
-        return redirect(success_url if success_url else "faq_question_list")
+        return redirect(success_url if success_url else "faq_submit_thanks")
 
     context = {'form': form}
     context.update(extra_context)
     return render(request, template_name, context)
+
+class SubmitFAQThanks(TemplateView):
+    template_name = "faq/submit_thanks.html"

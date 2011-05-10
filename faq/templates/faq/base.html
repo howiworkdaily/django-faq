@@ -1,29 +1,14 @@
+<!DOCTYPE html>
 <html>
 <head>
- <title>{% block title %}Django FAQ {% endblock %}</title>	
-
-<style>
-
-.answer
-{
-	color: #CC0000;
-}
-
-</style>
-
+  <meta charset=utf-8 /> 
+  <title>{% block title %}Django FAQ {% endblock %}</title>	
 </head>
 <body>
-{% if messages %}
-<ul id="messages">
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-</ul>
-<hr/>
-{% endif %}
-
-{% block body %}{% endblock %}
+  {% for message in messages %}
+    <p class="message">{{ message }}</p>
+  {% endfor %}
+  {% block body %}{% endblock %}
 </body>
-
 </html>
 
