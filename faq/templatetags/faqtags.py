@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 
 from django import template
-from ..enums import STATUS_ACTIVE
 from ..models import Question, Topic
 
 register = template.Library()
@@ -26,7 +25,7 @@ class FaqListNode(template.Node):
         else:
             qs = Question.objects.all()
             
-        context[self.varname] = qs.filter(status=STATUS_ACTIVE)[:num]
+        context[self.varname] = qs.filter(status=Question.ACTIVE)[:num]
         return ''
 
 @register.tag

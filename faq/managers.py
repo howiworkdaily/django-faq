@@ -1,8 +1,5 @@
 from django.db import models
 from django.db.models.query import QuerySet
-import datetime
-import enums
-
 
 class QuestionQuerySet(QuerySet):
     """
@@ -21,11 +18,11 @@ class QuestionQuerySet(QuerySet):
 
         if kwargs.get('slug'):
             slug = kwargs['slug']
-            return self.filter(status__exact=enums.STATUS_ACTIVE, slug__exact=slug)
+            return self.filter(status__exact=self.model.ACTIVE, slug__exact=slug)
         elif group:
-            return self.exclude(status__exact=enums.STATUS_INACTIVE,)
+            return self.exclude(status__exact=self.model.INACTIVE)
         else:
-            return self.filter(status__exact=enums.STATUS_ACTIVE,)
+            return self.filter(status__exact=self.model.ACTIVE)
 
 
 class QuestionManager(models.Manager):
