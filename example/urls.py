@@ -1,35 +1,18 @@
 from django.conf.urls.defaults import patterns, url, include
-from django.contrib import admin
+from django.contrib import admin; admin.autodiscover()
 from django.conf import settings
-from django.views.generic.simple import direct_to_template
+from django.views.generic import TemplateView
 import faq.views
 
-admin.autodiscover()
-
 urlpatterns = patterns('',
-    url(regex = r'^faq/$',
-        view  = faq.views.faq_list,
-        name  = 'faq_list',
-    ),
-    url(regex = r'^grouped_faq/$',
-        view  = faq.views.faq_list_by_group,
-        name  = 'faq_list_by_group',
-    ),
-    url(regex = r'^submit_faq/$',
-        view  = faq.views.submit_faq,
-        name  = 'submit',
-        ),
-    url(regex = r'^raw_faq/$',
-        view  = faq.views.question_list,
-        name  = 'question_list',
-        ),
-    url(regex  = r'^$',
-        view   = direct_to_template,
-        kwargs = {'template': 'faq/home.html'},
-        name   = 'home',
-    ),
+    # Just a simple example "home" page to show a bit of help/info.
+    url(r'^$', TemplateView.as_view(template_name="home.html")),
     
-    url(r'^admin/(.*)', include(admin.site.urls)),
+    # This is the URLconf line you'd put in a real app to include the FAQ views.
+    url(r'^faq/', include('faq.urls')),
+    
+    # Everybody wants an admin to wind a piece of string around.
+    url(r'^admin/', include(admin.site.urls)),
 
     # Normally we'd do this if DEBUG only, but this is just an example app.
     url(regex  = r'^static/(?P<path>.*)$', 

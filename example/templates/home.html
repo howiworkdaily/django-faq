@@ -1,0 +1,66 @@
+{% extends "faq/base.html" %}
+
+{% block body %}
+{% load url from future %}
+<h2>Welcome to the django-faq example project</h2>
+<p>
+  If you aren't seeing any data below, or if you're getting random 404s, make
+  sure you've loaded the sample data by running <code>./manage.py loaddata
+  faq_test_data</code>.
+</p>
+<p>Here are some options to try:</p>
+<dl>
+  <dt>The <a href="{% url "faq_topic_list" %}">topic list</a>.</dt>
+  <dd>This view shows a list of all the FAQ topic areas.</dd>
+  
+  <dt>
+    A <a href="{% url "faq_topic_detail" "silly-questions" %}">topic detail</a>
+    page.
+  </dt>
+  <dd>
+    This shows the list of all questions in a given topic.
+  </dd>
+  
+  <dt>
+    A <a href="{% url "faq_question_detail" "silly-questions" "your-quest" %}">question
+    detail</a> page.
+  </dt>
+  <dd>
+    This shows an individual question. Again, it'll only work if you've loaded
+    the sample data.
+  </dd>
+  
+  <dt>
+    The <a href="{% url "faq_submit" %}">question submission</a> page.
+  </dt>
+  <dd>
+    You can submit questions here. You'll notice that submitted questions
+    don't immediately appear: they're set to "inactive" and have to be
+    approved via the site admin.
+  </dd>
+  
+  <dt>
+    Speaking of the admin, here's <a href="{% url "admin:app_list" "faq" %}">the FAQ admin</a>.
+  </dt>
+  <dd>
+    Remember that you can clean up submitted questions in the admin before the
+    will be visible in the FAQ.
+  </dd>
+  
+  <dt>
+    Finally, below are some questions fetched into this template using a
+    template tag - <code>{% templatetag openblock %} faq_list 3 as faqs 
+    {% templatetag closeblock %}</code>.
+  </dt>
+  <dd>
+    Some FAQ questions include:
+    {% load faqtags %}
+    {% faq_list 3 as faqs %}
+    {% for faq in faqs %}
+      {{ faq.text }} {% if not forloop.last %}/{% endif %}
+    {% endfor %}
+  </dd>
+  
+</dl>    
+{% endblock %}
+
