@@ -34,13 +34,16 @@ Django 1.3, Python 2.5 or greater.
 Installation
 ============
 
-1. ``pip install django-faq``
+1. ``pip install -e git://github.com/howiworkdaily/django-faq.git#egg=django_faq``
 
 2. Add ``"faq"`` to your ``INSTALLED_APPS`` setting.
 
 3. Wire up the FAQ views by adding a line to your URLconf::
 
         url('^faq/', include('faq.urls'))
+
+Note: do *not* use ``pip install django-faq`` to install this app, as that
+currently grabs another package entirely.
 
 If you want to customize the templates then either create an 'faq' directory in
 your projects templates location, or you can also pass along custom
