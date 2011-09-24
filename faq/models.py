@@ -14,6 +14,9 @@ class Topic(models.Model):
     sort_order = models.IntegerField(_('sort order'), default=0,
         help_text=_('The order you would like the topic to be displayed.'))
 
+    def get_absolute_url(self):
+        return '/faq/' + self.slug
+
     class Meta:
         verbose_name = _("Topic")
         verbose_name_plural = _("Topics")
