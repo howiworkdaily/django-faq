@@ -50,7 +50,7 @@ your projects templates location, or you can also pass along custom
 'template_name' arguments by creating your own view wrappers around the 'faq'
 app views. I show how to do the latter in the 'example' project included - look
 at the views.py file to see the details.
-   
+
 If you'd like to load some example data then run ``python manage.py loaddata
 faq_test_data.json``
 
@@ -65,7 +65,7 @@ try it out:
 2. Run ``python manage.py syncdb`` (This assumes that sqlite3 is available; if not
    you'll need to change the ``DATABASES`` setting first.)
 
-3. If you'd like to load some example data then run 
+3. If you'd like to load some example data then run
    ``python manage.py loaddata faq_test_data.json``
 
 4. Run ``python manage.py runserver`` and you will have the example site up and
