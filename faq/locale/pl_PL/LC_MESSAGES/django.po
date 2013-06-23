@@ -1,0 +1,132 @@
+# Django-faq Polish translation.
+# Copyright (C) 2012.
+# This file is distributed under the same license as the django-faq package.
+# Karol Majta <karolmajta@gmail.com>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-06-23 23:08+0200\n"
+"PO-Revision-Date: 2012-06-23 23:08+0200\n"
+"Last-Translator: Karol Majta <karolmajta@gmail.com>\n"
+"Language-Team: Polish <PL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: models.py:12
+msgid "name"
+msgstr "imię"
+
+#: models.py:13 models.py:41
+msgid "slug"
+msgstr "slug"
+
+#: models.py:14 models.py:51
+msgid "sort order"
+msgstr "sortuj według"
+
+#: models.py:15
+msgid "The order you would like the topic to be displayed."
+msgstr "Wybierz jak posortowane będą tematy."
+
+#: models.py:21
+msgid "Topic"
+msgstr "Temat"
+
+#: models.py:22
+msgid "Topics"
+msgstr "Tematy"
+
+#: models.py:33
+msgid "Active"
+msgstr "Aktywny"
+
+#: models.py:34
+msgid "Inactive"
+msgstr "Nieaktywny"
+
+#: models.py:35
+msgid "Group Header"
+msgstr "Nagłówek Grupy"
+
+#: models.py:38
+msgid "question"
+msgstr "pytanie"
+
+#: models.py:38
+msgid "The actual question itself."
+msgstr "Treść pytania."
+
+#: models.py:39
+msgid "answer"
+msgstr "odpowiedź"
+
+#: models.py:39
+msgid "The answer text."
+msgstr "Treść odpowiedzi."
+
+#: models.py:40
+msgid "topic"
+msgstr "temat"
+
+#: models.py:42
+msgid "status"
+msgstr "status"
+
+#: models.py:44
+msgid ""
+"Only questions with their status set to 'Active' will be displayed. "
+"Questions marked as 'Group Header' are treated as such by views and "
+"templates that are set up to use them."
+msgstr ""
+"Jedynie pytania, których status ustawiono na 'Aktywny' będą wyświelane. "
+"Pytania oznaczone jako 'Nagłówek Grupy' są traktowane jako nagłówki przez "
+"widoki i szablony, które ich używają."
+
+#: models.py:48
+msgid "is protected"
+msgstr "chronione"
+
+#: models.py:49
+msgid "Set true if this question is only visible by authenticated users."
+msgstr ""
+"Zaznacz, jeśli to pytanie ma być widoczne jedynie dla zalogowanych "
+"użytkowników."
+
+#: models.py:52
+msgid "The order you would like the question to be displayed."
+msgstr "Wybierz jak posortowane będą pytania. "
+
+#: models.py:54
+msgid "created on"
+msgstr "utworzono"
+
+#: models.py:55
+msgid "updated on"
+msgstr "zmieniono"
+
+#: models.py:56
+msgid "created by"
+msgstr "utworzono"
+
+#: models.py:58
+msgid "updated by"
+msgstr "zmieniono"
+
+#: models.py:64
+msgid "Frequent asked question"
+msgstr "Często zadawane pytanie"
+
+#: models.py:65
+msgid "Frequently asked questions"
+msgstr "Często zadawane pytanie"
+
+#: views.py:95
+msgid ""
+"Your question was submitted and will be reviewed by for inclusion in the FAQ."
+msgstr ""
+"Twoje pytanie zostało przesłane. Dziękujemy, rozważymy umieszczenie go w FAQ."
+
