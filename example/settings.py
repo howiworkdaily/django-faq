@@ -31,5 +31,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.admin',
+
+    # Database migration helpers
+    'south',
+
     'faq',
 )
