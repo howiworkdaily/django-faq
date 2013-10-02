@@ -1,9 +1,11 @@
 import datetime
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.template.defaultfilters import slugify
 from managers import QuestionManager
+
+User = get_user_model()
 
 class Topic(models.Model):
     """
