@@ -1,4 +1,8 @@
 *.pyc
 *.bak
 *.db
-local_settings.py
+*.egg-info
+.tox/
+.coverage
+htmlcov/
+venv/

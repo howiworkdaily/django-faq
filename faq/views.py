@@ -1,97 +1,108 @@
-import datetime
-from django.views.generic.list_detail import object_detail, object_list
-from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
-from django.template import RequestContext
+from __future__ import absolute_import
+from django.db.models import Max
+from django.core.urlresolvers import reverse, NoReverseMatch
+from django.contrib import messages
 from django.http import Http404
-from models import Question
-from forms import SubmitFAQForm
+from django.shortcuts import redirect, render, get_object_or_404
+from django.utils.translation import ugettext as _
+from django.views.generic import ListView, DetailView, TemplateView, CreateView
+from .models import Question, Topic
+from .forms import SubmitFAQForm
 
-def question_detail(request, slug, template_name='faq/question_detail.html', extra_context={}):
-    """
-    Displays an individual question.
-    
-    """
+class TopicList(ListView):
+    model = Topic
+    template = "faq/topic_list.html"
+    allow_empty = True
+    context_object_name = "topics"
 
-    return object_detail(
-        request,
-        template_name = template_name,
-        extra_context = extra_context,
-        slug = slug,
-        slug_field = 'slug',
-        queryset = Question.objects.active(user=request.user),
-    )    
-        
-def question_list( request, template_name='faq/question_list.html',
-					extra_context={}, group=False):
-    '''
-    Displays a list of all the questions.
-    '''
-    
-    # NOTE:
-    # The code shown here is NOT REALLY NEEDED, but it is a good example
-    # of extending an app using extra_content and such.
-    # Specifically note how we set the dict value and then allow the user
-    # to pass along their own additional extra_context using 'update'.
+    def get_context_data(self, **kwargs):
+        data = super(TopicList, self).get_context_data(**kwargs)
 
-    query_set = Question.objects.active(group=group,user=request.user)
-    
-    if len(query_set) == 0:
-	raise Http404()
+        # This slightly magical queryset grabs the latest update date for
+        # topic's questions, then the latest date for that whole group.
+        # In other words, it's::
+        #
+        #   max(max(q.updated_on for q in topic.questions) for topic in topics)
+        #
+        # Except performed in the DB, so quite a bit more efficiant.
+        #
+        # We can't just do Question.objects.all().aggregate(max('updated_on'))
+        # because that'd prevent a subclass from changing the view's queryset
+        # (or even model -- this view'll even work with a different model
+        # as long as that model has a many-to-one to something called "questions"
+        # with an "updated_on" field). So this magic is the price we pay for
+        # being generic.
+        last_updated = (data['object_list']
+                            .annotate(updated=Max('questions__updated_on'))
+                            .aggregate(Max('updated')))
 
-    last_update = query_set.values('updated_on').order_by('-updated_on',)[0]    
-    extra = { 'updated_on': last_update['updated_on'] }
- 
-    extra.update( extra_context )
-    
-    return object_list(
-        request,
-        template_name = template_name,
-        extra_context = extra,
-        queryset = query_set
-    )
+        data.update({'last_updated': last_updated['updated__max']})
+        return data
 
-def faq_list( request, template_name='faq/faq_list.html', extra_context={} ):
-    '''
-    Display a typical FAQ view without group headers.
-    Shows how to "extend" or "override" the default view supplied above.
-    We also make sure this view is also overridable.
-    '''
-    
-    extra = { 'page_title': 'FAQs' }
-    extra.update( extra_context )
+class TopicDetail(DetailView):
+    model = Topic
+    template = "faq/topic_detail.html"
+    context_object_name = "topic"
 
-    return question_list( request, template_name=template_name, extra_context=extra )
+    def get_context_data(self, **kwargs):
+        # Include a list of questions this user has access to. If the user is
+        # logged in, this includes protected questions. Otherwise, not.
+        qs = self.object.questions.active()
+        if self.request.user.is_anonymous():
+            qs = qs.exclude(protected=True)
 
-def faq_list_by_group( request,
-                       template_name='faq/faq_list_by_group.html',
-                       extra_context={} ):
+        data = super(TopicDetail, self).get_context_data(**kwargs)
+        data.update({
+            'questions': qs,
+            'last_updated': qs.aggregate(updated=Max('updated_on'))['updated'],
+        })
+        return data
 
-    extra = { 'page_title': 'Grouped FAQs' }
-    extra.update( extra_context )
-    
-    return question_list( request, group=True,
-                          template_name=template_name, extra_context=extra)
+class QuestionDetail(DetailView):
+    queryset = Question.objects.active()
+    template = "faq/question_detail.html"
 
-def submit_faq( request, form_class=SubmitFAQForm, 
-             template_name="faq/submit_question.html",
-             success_url="/", extra_context={} ):
-    if request.method == 'POST':
-        form = form_class(data=request.POST)
-        if form.is_valid():
-            question = form.save()
-            if request.user.is_authenticated():
-                slug = question.slug
-                question.slug = slug.replace("anon",request.user.username)
-                question.created_by = request.user
-                # Now set up a confirmation message for the user
-                request.user.message_set.create(
-                    message="Your question was submitted and will be reviewed by the site administrator for possible inclusion in the FAQ." )
-            question.save()
-            return HttpResponseRedirect(success_url)
-    else:
-        form = form_class()
-    context = { 'form': form }
-    context.update( extra_context )
-    return render_to_response( template_name, context,
-                              context_instance = RequestContext( request ))
+    def get_queryset(self):
+        topic = get_object_or_404(Topic, slug=self.kwargs['topic_slug'])
+
+        # Careful here not to hardcode a base queryset. This lets
+        # subclassing users re-use this view on a subset of questions, or
+        # even on a new model.
+        # FIXME: similar logic as above. This should push down into managers.
+        qs = super(QuestionDetail, self).get_queryset().filter(topic=topic)
+        if self.request.user.is_anonymous():
+            qs = qs.exclude(protected=True)
+
+        return qs
+
+class SubmitFAQ(CreateView):
+    model = Question
+    form_class = SubmitFAQForm
+    template_name = "faq/submit_question.html"
+    success_view_name = "faq_submit_thanks"
+
+    def get_form_kwargs(self):
+        kwargs = super(SubmitFAQ, self).get_form_kwargs()
+        kwargs['instance'] = Question()
+        if self.request.user.is_authenticated():
+            kwargs['instance'].created_by = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        response = super(SubmitFAQ, self).form_valid(form)
+        messages.success(self.request,
+            _("Your question was submitted and will be reviewed by for inclusion in the FAQ."),
+            fail_silently=True,
+        )
+        return response
+
+    def get_success_url(self):
+        # The superclass version raises ImproperlyConfigered if self.success_url
+        # isn't set. Instead of that, we'll try to redirect to a named view.
+        if self.success_url:
+            return self.success_url
+        else:
+            return reverse(self.success_view_name)
+
+class SubmitFAQThanks(TemplateView):
+    template_name = "faq/submit_thanks.html"

@@ -1,0 +1,7 @@
+include AUTHORS.txt
+include LICENSE.txt
+include README.rst
+include MANIFEST.in
+recursive-include faq/locale *
+recursive-include faq/fixtures *
+recursive-include faq/templates *
