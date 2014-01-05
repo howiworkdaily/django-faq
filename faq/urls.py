@@ -1,6 +1,12 @@
 from __future__ import absolute_import
 
-from django.conf.urls.defaults import *
+try:
+    # Django > 1.6
+    from django.conf.urls import patterns, include, url
+except ImportError:
+    # Django < 1.6
+    from django.conf.urls.defaults import patterns, include, url
+
 from . import views as faq_views
 
 urlpatterns = patterns('',
