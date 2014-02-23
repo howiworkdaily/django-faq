@@ -1,9 +1,15 @@
-import datetime
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.template.defaultfilters import slugify
 from managers import QuestionManager
+from django.conf import settings
+
+if settings.USE_TZ:
+    from django.utils.timezone import now as datetime_now
+else:
+    import datetime
+    datetime_now = datetime.datetime.now
 
 User = get_user_model()
 
@@ -53,7 +59,7 @@ class Question(models.Model):
     sort_order = models.IntegerField(_('sort order'), default=0,
         help_text=_('The order you would like the question to be displayed.'))
 
-    created_on = models.DateTimeField(_('created on'), default=datetime.datetime.now)
+    created_on = models.DateTimeField(_('created on'), default=datetime_now)
     updated_on = models.DateTimeField(_('updated on'))
     created_by = models.ForeignKey(User, verbose_name=_('created by'),
         null=True, related_name="+")
@@ -72,7 +78,7 @@ class Question(models.Model):
 
     def save(self, *args, **kwargs):
         # Set the date updated.
-        self.updated_on = datetime.datetime.now()
+        self.updated_on = datetime_now()
         
         # Create a unique slug, if needed.
         if not self.slug:
