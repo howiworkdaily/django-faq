@@ -9,8 +9,8 @@ class QuestionQuerySet(QuerySet):
         return self.filter(status__exact=self.model.ACTIVE)
 
 class QuestionManager(models.Manager):
-    def get_query_set(self):
+    def get_queryset(self):
         return QuestionQuerySet(self.model)
 
     def active(self):
-        return self.get_query_set().active()
+        return self.get_queryset().active()
