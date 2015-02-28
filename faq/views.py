@@ -5,7 +5,6 @@ from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import redirect, render, get_object_or_404
 from django.utils.translation import ugettext as _
-from django.views.generic.list_detail import object_detail, object_list
 from django.views.generic import ListView, DetailView, TemplateView, CreateView
 from .models import Question, Topic
 from .forms import SubmitFAQForm
