@@ -13,4 +13,4 @@ class QuestionManager(models.Manager):
         return QuestionQuerySet(self.model)
 
     def active(self):
-        return self.get_query_set().active()
+        return self.get_queryset().active()
